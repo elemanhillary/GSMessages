@@ -380,6 +380,7 @@ public class GSMessage: NSObject {
                 self.activityIndicator.startAnimating()
             }
             messageView.addSubview(activityIndicator)
+            
             messageView.bringSubviewToFront(activityIndicator)
         }
     }
