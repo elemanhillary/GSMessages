@@ -13,6 +13,7 @@ public enum GSMessageType {
     case error
     case warning
     case info
+    case newContent
 }
 
 public enum GSMessagePosition {
@@ -80,6 +81,10 @@ extension UIViewController {
     open func hideMessage(animated: Bool = true) {
         view.hideMessage(animated: animated)
     }
+    
+    open func stopLoader() {
+        view.stopLoader()
+    }
 
 }
 
@@ -102,6 +107,12 @@ extension UIView {
     open func hideMessage(animated: Bool = true) {
         installedMessage?.hide(animated: animated)
     }
+    
+    open func stopLoader() {
+        DispatchQueue.main.async {
+            self.installedMessage?.activityIndicator.stopAnimating()
+        }
+    }
 
 }
 
@@ -113,6 +124,7 @@ public class GSMessage: NSObject {
     public static var warningBackgroundColor : UIColor = UIColor(red: 230.0/255, green: 189.0/255, blue: 1.0/255,   alpha: 0.95)
     public static var errorBackgroundColor   : UIColor = UIColor(red: 219.0/255, green: 36.0/255,  blue: 27.0/255,  alpha: 0.70)
     public static var infoBackgroundColor    : UIColor = UIColor(red: 44.0/255,  green: 187.0/255, blue: 255.0/255, alpha: 0.90)
+    public static var pillButtonColor : UIColor = #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1)
     
     public class func showMessageAddedTo(text: String,
                                          type: GSMessageType,
@@ -314,6 +326,8 @@ public class GSMessage: NSObject {
             messageView.backgroundColor = GSMessage.errorBackgroundColor
         case .info:
             messageView.backgroundColor = GSMessage.infoBackgroundColor
+        case .newContent:
+            messageView.backgroundColor = GSMessage.pillButtonColor
         }
         
         containerView.layer.zPosition = 1
