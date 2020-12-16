@@ -119,7 +119,7 @@ extension UIView {
 public class GSMessage: NSObject {
 
     public static var font : UIFont = UIFont.systemFont(ofSize: 14)
-    
+    public let activityIndicator = UIActivityIndicatorView.init()
     public static var successBackgroundColor : UIColor = UIColor(red: 142.0/255, green: 183.0/255, blue: 64.0/255,  alpha: 0.95)
     public static var warningBackgroundColor : UIColor = UIColor(red: 230.0/255, green: 189.0/255, blue: 1.0/255,   alpha: 0.95)
     public static var errorBackgroundColor   : UIColor = UIColor(red: 219.0/255, green: 36.0/255,  blue: 27.0/255,  alpha: 0.70)
@@ -370,8 +370,17 @@ public class GSMessage: NSObject {
     }
     
     @objc fileprivate func handleTap(_ tapGesture: UITapGestureRecognizer) {
+        activityIndicator.style = .white
+        activityIndicator.color = .white
+        activityIndicator.frame = CGRect.init(x: 0, y: 0, width: 42, height: 42)
+        activityIndicator.hidesWhenStopped = true
         if let handleTap = handleTap {
             handleTap()
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
+            messageView.addSubview(activityIndicator)
+            messageView.bringSubviewToFront(activityIndicator)
         }
     }
     
